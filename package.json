@@ -1,0 +1,64 @@
+{
+  "name": "vue-layout-manager",
+  "version": "0.1.0",
+  "description": "want to handle layouts without hassle?",
+  "module": "dist/vee-layout-manager.esm.js",
+  "unpkg": "dist/vee-layout-manager.js",
+  "main": "dist/vee-layout-manager.js",
+  "types": "dist/types/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint --fix 'src/**/*.ts'"
+  },
+  "files": [
+    "dist/*.js",
+    "dist/**/*.d.ts"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SreeChandan/vue-layout-manager.git"
+  },
+  "author": "Sree Chandan.R",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/SreeChandan/vue-layout-manager/issues"
+  },
+  "homepage": "https://github.com/SreeChandan/vue-layout-manager#readme",
+  "devDependencies": {
+    "@babel/core": "^7.9.6",
+    "@babel/plugin-transform-runtime": "^7.9.6",
+    "@babel/preset-env": "^7.9.6",
+    "@commitlint/cli": "^8.3.5",
+    "@types/lodash": "^4.14.152",
+    "@typescript-eslint/eslint-plugin": "^3.0.0",
+    "@typescript-eslint/parser": "^3.0.0",
+    "babel-core": "^6.26.3",
+    "babel-eslint": "^10.1.0",
+    "babel-jest": "^26.0.1",
+    "chalk": "^4.0.0",
+    "eslint": "^7.0.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-config-standard": "^14.1.1",
+    "eslint-plugin-import": "^2.20.2",
+    "eslint-plugin-jest": "^23.13.1",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prettier": "^3.1.3",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.1",
+    "jest": "^26.0.1",
+    "prettier": "^2.0.5",
+    "tslib": "^2.0.0",
+    "typescript": "^3.7.5",
+    "vue": "^2.6.11"
+  },
+  "peerDependencies": {
+    "vue": "^2.6.11"
+  },
+  "eslintIgnore": [
+    "dist"
+  ],
+  "dependencies": {
+    "lodash": "^4.17.15"
+  }
+}
