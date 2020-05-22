@@ -7,9 +7,7 @@
   "main": "dist/vee-layout-manager.js",
   "types": "dist/types/index.d.ts",
   "scripts": {
-    "build:tsc": "tsc",
-    "build:rollup": "rollup -c rollup.config.js",
-    "build:script": "node scripts/main.js && node scripts/definitions.js",
+    "build": "node scripts/build.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint --fix 'src/**/*.ts'"
   },
