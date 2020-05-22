@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import { cloneDeep } from 'lodash';
+import './layout-handler.css';
 
 async function typedData() {
   return {};
@@ -56,3 +57,4 @@ export const LayoutHandler = Vue.extend({
     },
   },
 });
+Vue.component('LayoutHandler', LayoutHandler);
