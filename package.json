@@ -4,15 +4,17 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "build": "vue-cli-service build --target lib --name vue-layout-manager --entry src/library-entry.ts",
     "test:e2e": "vue-cli-service test:e2e",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
     "core-js": "^3.6.4",
+    "lodash": "^4.17.15",
     "vue": "^2.6.11"
   },
   "devDependencies": {
+    "@types/lodash": "^4.14.152",
     "@typescript-eslint/eslint-plugin": "^2.26.0",
     "@typescript-eslint/parser": "^2.26.0",
     "@vue/cli-plugin-babel": "~4.3.0",
