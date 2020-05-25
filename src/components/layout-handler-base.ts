@@ -1,4 +1,5 @@
 import Vue from "vue";
+import { VNode } from "vue";
 import { cloneDeep } from "lodash";
 // import './layout-handler.css';
 
@@ -31,11 +32,11 @@ export const LayoutHandlerBase = Vue.extend({
           hasOwnProperties(gridElement, ["name", "position"])
         ),
     },
-    /* axis: {
+    axis: {
       type: String,
       required: true,
-      validator: (prop: string): boolean => ['x', 'y'].includes(prop),
-    }, */
+      validator: (prop: string): boolean => ["x", "y"].includes(prop),
+    },
   },
   data() {
     return Object.assign(typedData(), {
@@ -61,7 +62,23 @@ export const LayoutHandlerBase = Vue.extend({
             .sort((a, b) => a.position - b.position)
         );
     },
+    gridTemplate(): string {
+      return "unset";
+    },
   },
-  render:
+  // doing: creating the template
+  render: function(createElement): VNode {
+    return createElement(
+      "section",
+      {
+        class: "gridContainer",
+        style: {
+          "--gridTemplateRows": this.axis === "y" ? this.gridTemplate : "none",
+          "--gridTemplateColumns":
+            this.axis === "x" ? this.gridTemplate : "none",
+        },
+      }
+    );
+  },
 });
 // Vue.component('LayoutHandler', LayoutHandler);
