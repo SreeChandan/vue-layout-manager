@@ -1,5 +1,5 @@
 import Vue from "vue";
-import cloneDeep from "lodash/cloneDeep";
+import { cloneDeep } from "lodash";
 // import './layout-handler.css';
 
 async function typedData() {
@@ -13,7 +13,7 @@ interface GridElement {
 
 function hasOwnProperties(obj: Record<string, unknown>, props: string[]) {
   let res = true;
-  props.forEach(prop => {
+  props.forEach((prop) => {
     res = Object.prototype.hasOwnProperty.call(obj, prop);
   });
   return res;
@@ -27,10 +27,10 @@ export const LayoutHandlerBase = Vue.extend({
       type: Array,
       required: true,
       validator: (prop: Record<string, unknown>[]): boolean =>
-        prop.every(gridElement =>
+        prop.every((gridElement) =>
           hasOwnProperties(gridElement, ["name", "position"])
-        )
-    }
+        ),
+    },
     /* axis: {
       type: String,
       required: true,
@@ -53,14 +53,15 @@ export const LayoutHandlerBase = Vue.extend({
        * [1,5,2,-1,-2,-5] => [1,2,5,-5,-2,-1]
        */
       return r
-        .filter(value => value.position > 0)
+        .filter((value) => value.position > 0)
         .sort((a, b) => a.position - b.position)
         .concat(
           ...r
-            .filter(value => value.position < 0)
+            .filter((value) => value.position < 0)
             .sort((a, b) => a.position - b.position)
         );
-    }
-  }
+    },
+  },
+  render:
 });
 // Vue.component('LayoutHandler', LayoutHandler);

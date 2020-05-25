@@ -1,10 +1,10 @@
 {
   "name": "vue-layout-manager",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build --target lib --name vue-layout-manager --entry src/library-entry.ts",
+    "build": "vue-cli-service build --target lib --name vue-layout-manager --entry ./src/library-entry.ts",
     "test:e2e": "vue-cli-service test:e2e",
     "lint": "vue-cli-service lint"
   },
@@ -32,5 +32,10 @@
     "sass-loader": "^8.0.2",
     "typescript": "~3.8.3",
     "vue-template-compiler": "^2.6.11"
+  },
+  "peerDependencies": {
+    "core-js": "^3.6.4",
+    "lodash": "^4.17.15",
+    "vue": "^2.6.11"
   }
 }
