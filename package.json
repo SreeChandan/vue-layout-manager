@@ -1,6 +1,6 @@
 {
   "name": "vue-layout-manager",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "private": false,
   "main": "dist/vue-layout-manager.common.js",
   "module": "dist/vue-layout-manager.umd.js",
