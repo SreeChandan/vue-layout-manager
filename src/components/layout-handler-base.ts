@@ -218,7 +218,7 @@ export const LayoutHandlerBase = Vue.extend({
                 order: this.gridElementsOrders[val.name]
               }
             },
-            [createElement("slot", { slot: val.name })]
+            [this.$slots[val.name]]
             //Object.values(this.$slots)
           );
         }),
@@ -239,4 +239,3 @@ export const LayoutHandlerBase = Vue.extend({
     );
   }
 });
-// Vue.component('LayoutHandler', LayoutHandler);

@@ -2,6 +2,9 @@
   "name": "vue-layout-manager",
   "version": "0.1.0",
   "private": false,
+  "main": "./dist/vue-layout-manger.common.js",
+  "module": "./dist/vue-layout-manger.umd.js",
+  "unpkg": "./dist/vue-layout-manger.umd.min.js",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build --target lib --name vue-layout-manager --entry ./src/library-entry.ts",
