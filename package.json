@@ -2,9 +2,9 @@
   "name": "vue-layout-manager",
   "version": "0.1.1",
   "private": false,
-  "main": "./dist/vue-layout-manger.common.js",
-  "module": "./dist/vue-layout-manger.umd.js",
-  "unpkg": "./dist/vue-layout-manger.umd.min.js",
+  "main": "dist/vue-layout-manager.common.js",
+  "module": "dist/vue-layout-manager.umd.js",
+  "unpkg": "dist/vue-layout-manager.umd.min.js",
   "files": [
     "dist"
   ],
@@ -49,5 +49,15 @@
     "core-js": "^3.6.4",
     "lodash": "^4.17.15",
     "vue": "^2.6.11"
-  }
+  },
+  "author": "Sree Chandan.R <sreechandan98@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SreeChandan/vue-layout-manager.git"
+  },
+  "bugs": {
+    "url": "https://github.com/SreeChandan/vue-layout-manager/issues"
+  },
+  "homepage": "https://github.com/SreeChandan/vue-layout-manager#readme",
+  "license": "Apache-2.0"
 }
