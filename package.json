@@ -11,6 +11,9 @@
     "test:e2e": "vue-cli-service test:e2e",
     "lint": "vue-cli-service lint"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "dependencies": {
     "core-js": "^3.6.4",
     "lodash": "^4.17.15",

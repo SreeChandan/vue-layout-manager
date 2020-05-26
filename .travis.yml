@@ -1,0 +1,28 @@
+language: node_js
+node_js:
+  - 12.16.1
+cache:
+  directories:
+    - node_modules
+
+git:
+  depth: 3
+
+branches:
+  only:
+    - master
+
+install:
+  - npm ci
+
+script:
+  - npm run lint
+  - npm run build
+
+deploy:
+  edge: true
+  provider: npm
+  email: sreechandan98@gmail.com
+  api_key: $NPM_TOKEN
+  on:
+    branch: master
