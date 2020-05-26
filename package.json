@@ -1,15 +1,21 @@
 {
   "name": "vue-layout-manager",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": false,
   "main": "./dist/vue-layout-manger.common.js",
   "module": "./dist/vue-layout-manger.umd.js",
   "unpkg": "./dist/vue-layout-manger.umd.min.js",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build --target lib --name vue-layout-manager --entry ./src/library-entry.ts",
     "test:e2e": "vue-cli-service test:e2e",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "versionBump:minor": "npm version minor --no-git-tag-version --force",
+    "versionBump:patch": "npm version patch --no-git-tag-version --force",
+    "npm:pack:inspect": "tar tvf $(npm pack) && rm *.tgz"
   },
   "publishConfig": {
     "access": "public"
