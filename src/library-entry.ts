@@ -1,5 +1,5 @@
 import LayoutManager from "./components/LayoutManager.vue";
-import Vue from "vue";
+//import Vue from "vue";
 import { VueConstructor } from "vue";
 export { LayoutManager };
 const plugin = {

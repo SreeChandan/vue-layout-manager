@@ -62,6 +62,18 @@ export const LayoutHandlerBase = Vue.extend({
             .sort((a, b) => a.position - b.position)
         );
     },
+    fillers(): Array<Record<string, number>> {
+      return [];
+    },
+    orders(): Array<Record<string, number>> {
+      return [];
+    },
+    fillersFinal(): Array<Record<string, number>> {
+      return [];
+    },
+    gridElementsOrders(): Record<string, unknown> {
+      return {};
+    },
     gridTemplate(): string {
       return "unset";
     },
@@ -77,7 +89,35 @@ export const LayoutHandlerBase = Vue.extend({
           "--gridTemplateColumns":
             this.axis === "x" ? this.gridTemplate : "none",
         },
-      }
+      },
+      [
+        ...this.gridElements.map((value, index) => {
+          const val = value as GridElement;
+          return createElement(
+            "div",
+            {
+              class: "gridElement",
+              key: index,
+              style: {
+                order: this.gridElementsOrders[val.name],
+              },
+            },
+            [createElement("slot", { slot: val.name })]
+            //Object.values(this.$slots)
+          );
+        }),
+        ...this.fillersFinal.map((filler, index) => {
+          return createElement("div", {
+            class: "gridElementEmpty",
+            key: "filler" + index,
+            style: {
+              order: Object.values(
+                this.orders[Object.values(filler)[0] + 1]
+              )[0],
+            },
+          });
+        }),
+      ]
     );
   },
 });
