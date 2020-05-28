@@ -1,6 +1,6 @@
 import Vue from "vue";
 import { VNode } from "vue";
-import { cloneDeep } from "lodash";
+import cloneDeep from "lodash/cloneDeep";
 // import './layout-handler.css';
 
 function typedData() {
