@@ -1,8 +1,9 @@
+const prodExternals = {
+  lodash: "lodash"
+};
 module.exports = {
   css: { extract: false },
   configureWebpack: {
-    externals: {
-      lodash: "lodash"
-    }
+    externals: process.env.NODE_ENV === "production" ? prodExternals : {}
   }
 };

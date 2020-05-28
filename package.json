@@ -1,32 +1,32 @@
 {
   "name": "vue-layout-manager",
-  "version": "0.1.4",
+  "version": "0.1.5",
+  "description": "layout manager with simple inputs",
   "private": false,
+  "author": "Sree Chandan.R <sreechandan98@gmail.com>",
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build --target lib --name vue-layout-manager --entry ./src/library-entry.ts",
+    "test:e2e": "vue-cli-service test:e2e",
+    "test:cleanup": "",
+    "lint": "vue-cli-service lint",
+    "npm:pack:inspect": "npm pack --dry-run",
+    "versionBump:minor": "npm version minor --no-git-tag-version --force",
+    "versionBump:patch": "npm version patch --no-git-tag-version --force"
+  },
   "main": "dist/vue-layout-manager.common.js",
   "module": "dist/vue-layout-manager.umd.js",
   "unpkg": "dist/vue-layout-manager.umd.min.js",
   "files": [
     "dist"
   ],
-  "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build --target lib --name vue-layout-manager --entry ./src/library-entry.ts",
-    "test:e2e": "vue-cli-service test:e2e",
-    "lint": "vue-cli-service lint",
-    "versionBump:minor": "npm version minor --no-git-tag-version --force",
-    "versionBump:patch": "npm version patch --no-git-tag-version --force",
-    "npm:pack:inspect": "tar tvf $(npm pack) && rm *.tgz"
-  },
-  "publishConfig": {
-    "access": "public"
-  },
   "dependencies": {
     "core-js": "^3.6.4",
     "lodash": "^4.17.15",
     "vue": "^2.6.11"
   },
   "devDependencies": {
-    "@types/lodash": "^4.14.152",
+    "@types/lodash": "^4.14.153",
     "@typescript-eslint/eslint-plugin": "^2.26.0",
     "@typescript-eslint/parser": "^2.26.0",
     "@vue/cli-plugin-babel": "~4.3.0",
@@ -36,6 +36,7 @@
     "@vue/cli-service": "~4.3.0",
     "@vue/eslint-config-prettier": "^6.0.0",
     "@vue/eslint-config-typescript": "^5.0.2",
+    "cypress": "*",
     "eslint": "^6.7.2",
     "eslint-plugin-prettier": "^3.1.1",
     "eslint-plugin-vue": "^6.2.2",
@@ -50,14 +51,16 @@
     "lodash": "^4.17.15",
     "vue": "^2.6.11"
   },
-  "author": "Sree Chandan.R <sreechandan98@gmail.com>",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/SreeChandan/vue-layout-manager.git"
-  },
   "bugs": {
     "url": "https://github.com/SreeChandan/vue-layout-manager/issues"
   },
   "homepage": "https://github.com/SreeChandan/vue-layout-manager#readme",
-  "license": "Apache-2.0"
+  "license": "Apache-2.0",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SreeChandan/vue-layout-manager.git"
+  }
 }
