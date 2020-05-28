@@ -159,9 +159,9 @@ export const LayoutHandlerBase = Vue.extend({
     gridElementsOrders(): Record<string, GridElement["position"]> {
       const res: Record<string, GridElement["position"]> = {};
       this.fillers?.forEach(value => {
-        this.finalOrders?.forEach(
-          value2 => (res[value2.name] = value2.position)
-        );
+        this.finalOrders?.forEach(value2 => {
+          res[value2.name] = value2.position;
+        });
       });
       return res;
     },
@@ -187,7 +187,10 @@ export const LayoutHandlerBase = Vue.extend({
         });
         //console.table(res);
         let resF = "";
-        res.forEach(value2 => (resF += value2 + " "));
+        res.forEach(
+          (value2, index) =>
+            (resF += value2 + (index + 1 < res.length ? " " : ""))
+        );
         //console.log("-------------------------------------");
         return resF;
       }
@@ -225,7 +228,7 @@ export const LayoutHandlerBase = Vue.extend({
         ...(this.fillersFinal
           ? this.fillersFinal.map((filler, index) => {
               return createElement("div", {
-                class: "gridElementEmpty",
+                class: "gridElementSpacer",
                 key: "filler" + index,
                 style: {
                   order: this.finalOrders
