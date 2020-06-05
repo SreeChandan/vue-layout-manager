@@ -2,7 +2,7 @@
 import { LayoutHandlerBase } from "./layout-handler-base";
 export default {
   name: "LayoutManager",
-  extends: LayoutHandlerBase
+  extends: LayoutHandlerBase,
 };
 </script>
 
@@ -12,6 +12,8 @@ export default {
 
   height: 100%;
   width: 100%;
+  min-height: inherit;
+  min-width: inherit;
 
   grid-template-rows: var(--gridTemplateRows);
   grid-template-columns: var(--gridTemplateColumns);

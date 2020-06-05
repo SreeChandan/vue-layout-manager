@@ -1,7 +1,6 @@
 import Vue from "vue";
 import { VNode } from "vue";
 import cloneDeep from "lodash/cloneDeep";
-// import './layout-handler.css';
 
 function typedData() {
   return {};
@@ -14,7 +13,7 @@ interface GridElement {
 
 function hasOwnProperties(obj: Record<string, unknown>, props: string[]) {
   let res = true;
-  props.forEach(prop => {
+  props.forEach((prop) => {
     res = Object.prototype.hasOwnProperty.call(obj, prop);
   });
   return res;
@@ -28,15 +27,15 @@ export const LayoutHandlerBase = Vue.extend({
       type: Array,
       required: true,
       validator: (prop: Record<string, unknown>[]): boolean =>
-        prop.every(gridElement =>
+        prop.every((gridElement) =>
           hasOwnProperties(gridElement, ["name", "position"])
-        )
+        ),
     },
     axis: {
       type: String,
       required: true,
-      validator: (prop: string): boolean => ["x", "y"].includes(prop)
-    }
+      validator: (prop: string): boolean => ["x", "y"].includes(prop),
+    },
   },
   data() {
     const partialData = typedData();
@@ -45,23 +44,25 @@ export const LayoutHandlerBase = Vue.extend({
     });
   },
   computed: {
-    rawOrdersSorted(): GridElement[] {
+    rawOrdersSorted(): GridElement[] | undefined {
       let r: GridElement[] = [];
-      const gridElements = this.gridElements as GridElement[];
-      r = cloneDeep(gridElements);
-      /**
-       * [1,5,2] => [1,2,5]
-       * [-1,-5,-2] => [-5,-2,-1]
-       * [1,5,2,-1,-2,-5] => [1,2,5,-5,-2,-1]
-       */
-      return r
-        .filter(value => value.position > 0)
-        .sort((a, b) => a.position - b.position)
-        .concat(
-          ...r
-            .filter(value => value.position < 0)
-            .sort((a, b) => a.position - b.position)
-        );
+      if (cloneDeep) {
+        const gridElements = this.gridElements as GridElement[];
+        r = cloneDeep(gridElements);
+        /**
+         * [1,5,2] => [1,2,5]
+         * [-1,-5,-2] => [-5,-2,-1]
+         * [1,5,2,-1,-2,-5] => [1,2,5,-5,-2,-1]
+         */
+        return r
+          .filter((value) => value.position > 0)
+          .sort((a, b) => a.position - b.position)
+          .concat(
+            ...r
+              .filter((value) => value.position < 0)
+              .sort((a, b) => a.position - b.position)
+          );
+      } else return undefined;
     },
     fillers(): GridElement[] | undefined {
       if (this.rawOrdersSorted) {
@@ -72,23 +73,23 @@ export const LayoutHandlerBase = Vue.extend({
            * @type {Boolean}
            */
           const condition1 =
-            value.position < 0 && this.rawOrdersSorted.length === 1;
+            value.position < 0 && this.rawOrdersSorted!.length === 1;
 
           /**
            * 1 => true
            * @type {Boolean}
            */
           const condition3 =
-            value.position > 0 && this.rawOrdersSorted.length === 1;
+            value.position > 0 && this.rawOrdersSorted!.length === 1;
 
           /**
            * 1 , 3 => true | 1 , 2 => false | -3, -1 => true
            * @type {Boolean}
            */
           const condition2 =
-            index < this.rawOrdersSorted.length - 1 &&
+            index < this.rawOrdersSorted!.length - 1 &&
             Math.abs(
-              this.rawOrdersSorted[index + 1].position - value.position
+              this.rawOrdersSorted![index + 1].position - value.position
             ) > 1;
 
           //console.table({ condition1, condition2, condition3 });
@@ -102,12 +103,12 @@ export const LayoutHandlerBase = Vue.extend({
       } else return undefined;
     },
     finalOrders(): GridElement[] | undefined {
-      if (this.fillers && this.gridElements) {
+      if (this.fillers && this.gridElements && this.rawOrdersSorted) {
         /**
          * @type {Array}
          */
         const res: GridElement[] = [];
-        this.rawOrdersSorted.forEach(value => {
+        this.rawOrdersSorted.forEach((value) => {
           res.push(value);
         });
         //console.log("-------------------------------------");
@@ -128,7 +129,7 @@ export const LayoutHandlerBase = Vue.extend({
               const fillerVal = res[val + index].position + 1;
               res.splice(val + index + 1, 0, {
                 name: "filler",
-                position: fillerVal
+                position: fillerVal,
               });
             }
             //console.table(res);
@@ -142,7 +143,7 @@ export const LayoutHandlerBase = Vue.extend({
             if (index !== 0)
               res[index] = {
                 name: value.name,
-                position: res[index - 1].position + 1
+                position: res[index - 1].position + 1,
               };
             else res[index] = { name: value.name, position: 1 };
         });
@@ -158,8 +159,8 @@ export const LayoutHandlerBase = Vue.extend({
     },
     gridElementsOrders(): Record<string, GridElement["position"]> {
       const res: Record<string, GridElement["position"]> = {};
-      this.fillers?.forEach(value => {
-        this.finalOrders?.forEach(value2 => {
+      this.fillers?.forEach((value) => {
+        this.finalOrders?.forEach((value2) => {
           res[value2.name] = value2.position;
         });
       });
@@ -179,7 +180,7 @@ export const LayoutHandlerBase = Vue.extend({
         (this.gridElements as GridElement[]).forEach((value, index) => {
           let pos = value.position;
           pos = pos > 0 ? pos - 1 : res.length + pos;
-          if (this.fillers && this.fillers.some(v => v.position === pos)) {
+          if (this.fillers && this.fillers.some((v) => v.position === pos)) {
             res[pos + 1] = "auto";
             res[pos + 2] = "max-content";
           }
@@ -195,10 +196,10 @@ export const LayoutHandlerBase = Vue.extend({
         return resF;
       }
       return "unset";
-    }
+    },
   },
   // doing: creating the template
-  render: function(createElement): VNode {
+  render: function (createElement): VNode {
     return createElement(
       "section",
       {
@@ -206,8 +207,8 @@ export const LayoutHandlerBase = Vue.extend({
         style: {
           "--gridTemplateRows": this.axis === "y" ? this.gridTemplate : "none",
           "--gridTemplateColumns":
-            this.axis === "x" ? this.gridTemplate : "none"
-        }
+            this.axis === "x" ? this.gridTemplate : "none",
+        },
       },
       [
         ...this.gridElements.map((value, index) => {
@@ -218,8 +219,8 @@ export const LayoutHandlerBase = Vue.extend({
               class: "gridElement",
               key: index,
               style: {
-                order: this.gridElementsOrders[val.name]
-              }
+                order: this.gridElementsOrders[val.name],
+              },
             },
             [this.$slots[val.name]]
             //Object.values(this.$slots)
@@ -233,12 +234,15 @@ export const LayoutHandlerBase = Vue.extend({
                 style: {
                   order: this.finalOrders
                     ? this.finalOrders[filler.position + 1].position
-                    : 0
-                }
+                    : 0,
+                },
               });
             })
-          : [])
+          : []),
       ]
     );
-  }
+  },
+  mounted() {
+    //cloneDeepimporter();
+  },
 });
