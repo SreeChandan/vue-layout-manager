@@ -1,10 +1,12 @@
-const prodExternals = {
+const prodExternals = [
   //lodash: "lodash",
-  "lodash/cloneDeep": "cloneDeep",
-};
+  "lodash",
+  /lodash\/.*/,
+  //
+];
 module.exports = {
   css: { extract: false },
   configureWebpack: {
-    externals: process.env.NODE_ENV === "production" ? prodExternals : {},
+    externals: process.env.NODE_ENV === "production" ? prodExternals : [],
   },
 };

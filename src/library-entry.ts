@@ -8,6 +8,6 @@ const plugin = {
       options?.customName ? options.customName : "LayoutManager",
       LayoutManager
     );
-  }
+  },
 };
 export default plugin;

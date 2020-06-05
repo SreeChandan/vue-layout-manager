@@ -36,26 +36,26 @@ export default {
   name: "app",
   components: {
     //HelloWorld
-    LayoutManager
+    LayoutManager,
   },
   data() {
     return {
       gridElements: [
         {
           name: "HeaderBar",
-          position: 1
+          position: 1,
         },
         {
           name: "StatusBar",
-          position: -1
+          position: -1,
         },
         {
           name: "midContent",
-          position: 3
-        }
-      ]
+          position: 3,
+        },
+      ],
     };
-  }
+  },
 };
 </script>
 
