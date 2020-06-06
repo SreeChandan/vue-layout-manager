@@ -17,11 +17,16 @@ export default {
 
   grid-template-rows: var(--gridTemplateRows);
   grid-template-columns: var(--gridTemplateColumns);
+  column-gap: var(--columnGaps);
+  row-gap: var(--rowGaps);
 
-  box-sizing: border-box;
   border-radius: inherit;
+  overflow: hidden;
 }
+.gridContainer,
 .gridElement {
   box-sizing: border-box;
+}
+.gridElement {
 }
 </style>
