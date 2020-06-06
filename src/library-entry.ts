@@ -3,7 +3,10 @@ import LayoutManager from "./components/LayoutManager.vue";
 import { VueConstructor } from "vue";
 export { LayoutManager };
 const plugin = {
-  install: (VueInstance: VueConstructor, options?: { customName: string }) => {
+  install: (
+    VueInstance: VueConstructor,
+    options?: { customName: string }
+  ): void => {
     VueInstance.component(
       options?.customName ? options.customName : "LayoutManager",
       LayoutManager

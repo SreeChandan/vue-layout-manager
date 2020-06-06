@@ -36,8 +36,11 @@ export const LayoutHandlerBase = Vue.extend({
       required: true,
       validator: (prop: string): boolean => ["x", "y"].includes(prop),
     },
+    gap: String,
+    gridElementStyle: Object,
+    gridSpacersStyle: Object
   },
-  data() {
+  data(): Record<string, unknown> {
     const partialData = typedData();
     return Object.assign({}, partialData, {
       //
@@ -208,6 +211,10 @@ export const LayoutHandlerBase = Vue.extend({
           "--gridTemplateRows": this.axis === "y" ? this.gridTemplate : "none",
           "--gridTemplateColumns":
             this.axis === "x" ? this.gridTemplate : "none",
+          "--rowGaps":
+            this.axis === "y" ? (this.gap ? this.gap : "0px") : "0px",
+          "--columnGaps":
+            this.axis === "x" ? (this.gap ? this.gap : "0px") : "0px",
         },
       },
       [
@@ -218,9 +225,13 @@ export const LayoutHandlerBase = Vue.extend({
             {
               class: "gridElement",
               key: index,
-              style: {
-                order: this.gridElementsOrders[val.name],
-              },
+              style: Object.assign(
+                {},
+                this.gridElementStyle ? this.gridElementStyle : {},
+                {
+                  order: this.gridElementsOrders[val.name],
+                }
+              ),
             },
             [this.$slots[val.name]]
             //Object.values(this.$slots)
@@ -231,11 +242,15 @@ export const LayoutHandlerBase = Vue.extend({
               return createElement("div", {
                 class: "gridElementSpacer",
                 key: "filler" + index,
-                style: {
-                  order: this.finalOrders
-                    ? this.finalOrders[filler.position + 1].position
-                    : 0,
-                },
+                style: Object.assign(
+                  {},
+                  this.gridSpacersStyle ? this.gridSpacersStyle : {},
+                  {
+                    order: this.finalOrders
+                      ? this.finalOrders[filler.position + 1].position
+                      : 0,
+                  }
+                ),
               });
             })
           : []),
