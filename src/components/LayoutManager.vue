@@ -6,7 +6,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .gridContainer {
   display: grid;
 
@@ -21,12 +21,27 @@ export default {
   row-gap: var(--rowGaps);
 
   border-radius: inherit;
-  overflow: hidden;
 }
 .gridContainer,
+.gridElementSpacer,
 .gridElement {
   box-sizing: border-box;
+  position: relative;
 }
 .gridElement {
+  border-radius: var(--border-radius, unset);
+}
+.gridElementSpacer {
+  pointer-events: none;
+}
+ol,
+ul {
+  list-style-type: none;
+}
+ol,
+ul,
+li {
+  margin: 0px;
+  padding: 0px;
 }
 </style>

@@ -36,9 +36,9 @@ export const LayoutHandlerBase = Vue.extend({
       required: true,
       validator: (prop: string): boolean => ["x", "y"].includes(prop),
     },
-    gap: String,
+    gap: { type: String, default: "0px" },
     gridElementStyle: Object,
-    gridSpacersStyle: Object
+    gridSpacersStyle: Object,
   },
   data(): Record<string, unknown> {
     const partialData = typedData();
@@ -180,7 +180,7 @@ export const LayoutHandlerBase = Vue.extend({
         });
         //console.log("-------------------------------------");
         //console.table(res);
-        (this.gridElements as GridElement[]).forEach((value, index) => {
+        (this.gridElements as GridElement[]).forEach((value) => {
           let pos = value.position;
           pos = pos > 0 ? pos - 1 : res.length + pos;
           if (this.fillers && this.fillers.some((v) => v.position === pos)) {
@@ -204,42 +204,43 @@ export const LayoutHandlerBase = Vue.extend({
   // doing: creating the template
   render: function (createElement): VNode {
     return createElement(
-      "section",
+      "ul",
       {
         class: "gridContainer",
         style: {
           "--gridTemplateRows": this.axis === "y" ? this.gridTemplate : "none",
           "--gridTemplateColumns":
             this.axis === "x" ? this.gridTemplate : "none",
-          "--rowGaps":
-            this.axis === "y" ? (this.gap ? this.gap : "0px") : "0px",
-          "--columnGaps":
-            this.axis === "x" ? (this.gap ? this.gap : "0px") : "0px",
+          "--rowGaps": this.axis === "y" ? this.gap : "0px",
+          "--columnGaps": this.axis === "x" ? this.gap : "0px",
         },
       },
       [
-        ...this.gridElements.map((value, index) => {
-          const val = value as GridElement;
-          return createElement(
-            "div",
-            {
-              class: "gridElement",
-              key: index,
-              style: Object.assign(
-                {},
-                this.gridElementStyle ? this.gridElementStyle : {},
+        ...(this.finalOrders
+          ? this.gridElements.map((value, index) => {
+              const val = value as GridElement;
+              return createElement(
+                "li",
                 {
-                  order: this.gridElementsOrders[val.name],
-                }
-              ),
-            },
-            [this.$slots[val.name]]
-            //Object.values(this.$slots)
-          );
-        }),
+                  class: "gridElement",
+                  key: index,
+                  style: Object.assign(
+                    {},
+                    this.gridElementStyle ? this.gridElementStyle : {},
+                    {
+                      order: this.gridElementsOrders[val.name],
+                      "--border-radius": "unset",
+                    }
+                  ),
+                },
+                [this.$slots[val.name]]
+                //Object.values(this.$slots)
+              );
+            })
+          : []),
         ...(this.fillersFinal
           ? this.fillersFinal.map((filler, index) => {
-              return createElement("div", {
+              return createElement("li", {
                 class: "gridElementSpacer",
                 key: "filler" + index,
                 style: Object.assign(
