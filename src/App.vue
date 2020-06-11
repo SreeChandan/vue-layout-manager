@@ -27,7 +27,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 //import HelloWorld from "./components/HelloWorld.vue";
 //import { LayoutManager } from "../dist/vue-layout-manager.umd";
 import LayoutManager from "@/components/LayoutManager.vue";
@@ -38,7 +38,7 @@ export default {
     //HelloWorld
     LayoutManager,
   },
-  data() {
+  data(): Record<string, unknown> {
     return {
       gridElements: [
         {

@@ -11,6 +11,11 @@ interface GridElement {
   position: number;
 }
 
+interface GridEnds {
+  absolute: Record<"start" | "end", GridElement | null>;
+  elements: Record<"start" | "end", GridElement | null>;
+}
+
 function hasOwnProperties(obj: Record<string, unknown>, props: string[]) {
   let res = true;
   props.forEach((prop) => {
@@ -36,9 +41,9 @@ export const LayoutHandlerBase = Vue.extend({
       required: true,
       validator: (prop: string): boolean => ["x", "y"].includes(prop),
     },
-    gap: String,
+    gap: { type: String, default: "0px" },
     gridElementStyle: Object,
-    gridSpacersStyle: Object
+    gridSpacersStyle: Object,
   },
   data(): Record<string, unknown> {
     const partialData = typedData();
@@ -164,8 +169,35 @@ export const LayoutHandlerBase = Vue.extend({
       const res: Record<string, GridElement["position"]> = {};
       this.fillers?.forEach((value) => {
         this.finalOrders?.forEach((value2) => {
-          res[value2.name] = value2.position;
+          if (value2.name !== "filler") res[value2.name] = value2.position;
         });
+      });
+      return res;
+    },
+    gridEnds(): GridEnds {
+      const res: GridEnds = {
+        absolute: { start: null, end: null },
+        elements: { start: null, end: null },
+      };
+      this.finalOrders?.forEach(({ name, position }) => {
+        if (
+          res.absolute.start === null ||
+          position < res.absolute.start.position
+        )
+          res.absolute.start = { name: name, position: position };
+        if (res.absolute.end === null || position > res.absolute.end.position)
+          res.absolute.end = { name: name, position: position };
+
+        if (
+          res.elements.start === null ||
+          (position < res.elements.start.position && name !== "filler")
+        )
+          res.elements.start = { name: name, position: position };
+        if (
+          res.elements.end === null ||
+          (position > res.elements.end.position && name !== "filler")
+        )
+          res.elements.end = { name: name, position: position };
       });
       return res;
     },
@@ -180,7 +212,7 @@ export const LayoutHandlerBase = Vue.extend({
         });
         //console.log("-------------------------------------");
         //console.table(res);
-        (this.gridElements as GridElement[]).forEach((value, index) => {
+        (this.gridElements as GridElement[]).forEach((value) => {
           let pos = value.position;
           pos = pos > 0 ? pos - 1 : res.length + pos;
           if (this.fillers && this.fillers.some((v) => v.position === pos)) {
@@ -204,49 +236,72 @@ export const LayoutHandlerBase = Vue.extend({
   // doing: creating the template
   render: function (createElement): VNode {
     return createElement(
-      "section",
+      "ul",
       {
         class: "gridContainer",
         style: {
           "--gridTemplateRows": this.axis === "y" ? this.gridTemplate : "none",
           "--gridTemplateColumns":
             this.axis === "x" ? this.gridTemplate : "none",
-          "--rowGaps":
-            this.axis === "y" ? (this.gap ? this.gap : "0px") : "0px",
-          "--columnGaps":
-            this.axis === "x" ? (this.gap ? this.gap : "0px") : "0px",
+          "--rowGaps": this.axis === "y" ? this.gap : "0px",
+          "--columnGaps": this.axis === "x" ? this.gap : "0px",
         },
       },
       [
-        ...this.gridElements.map((value, index) => {
-          const val = value as GridElement;
-          return createElement(
-            "div",
-            {
-              class: "gridElement",
-              key: index,
-              style: Object.assign(
-                {},
-                this.gridElementStyle ? this.gridElementStyle : {},
+        ...(this.finalOrders
+          ? (this.gridElements as GridElement[]).map((value, index) => {
+              return createElement(
+                "li",
                 {
-                  order: this.gridElementsOrders[val.name],
-                }
-              ),
-            },
-            [this.$slots[val.name]]
-            //Object.values(this.$slots)
-          );
-        }),
+                  class: "gridElement",
+                  key: index,
+                  style: Object.assign(
+                    {},
+                    this.gridElementStyle ? this.gridElementStyle : {},
+                    {
+                      "--order": this.gridElementsOrders[value.name],
+                      "--border-top-left-radius":
+                        this.gridEnds.absolute.start?.name === value.name
+                          ? "initial"
+                          : "0px",
+                      "--border-top-right-radius":
+                        this.axis == "x"
+                          ? this.gridEnds.absolute.end?.name === value.name
+                            ? "initial"
+                            : "0px"
+                          : this.gridEnds.absolute.start?.name === value.name
+                          ? "initial"
+                          : "0px",
+                      "--border-bottom-left-radius":
+                        this.axis == "x"
+                          ? this.gridEnds.absolute.start?.name === value.name
+                            ? "initial"
+                            : "0px"
+                          : this.gridEnds.absolute.end?.name === value.name
+                          ? "initial"
+                          : "0px",
+                      "--border-bottom-right-radius":
+                        this.gridEnds.absolute.end?.name === value.name
+                          ? "initial"
+                          : "0px",
+                    }
+                  ),
+                },
+                [this.$slots[value.name]]
+                //Object.values(this.$slots)
+              );
+            })
+          : []),
         ...(this.fillersFinal
           ? this.fillersFinal.map((filler, index) => {
-              return createElement("div", {
+              return createElement("li", {
                 class: "gridElementSpacer",
                 key: "filler" + index,
                 style: Object.assign(
                   {},
                   this.gridSpacersStyle ? this.gridSpacersStyle : {},
                   {
-                    order: this.finalOrders
+                    "--order": this.finalOrders
                       ? this.finalOrders[filler.position + 1].position
                       : 0,
                   }
