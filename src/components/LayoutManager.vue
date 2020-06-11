@@ -29,10 +29,15 @@ export default {
   position: relative;
 }
 .gridElement {
-  border-radius: var(--border-radius, unset);
+  order: var(--order);
+  border-top-left-radius: var(--border-top-left-radius, inherit);
+  border-top-right-radius: var(--border-top-right-radius, inherit);
+  border-bottom-left-radius: var(--border-bottom-left-radius, inherit);
+  border-bottom-right-radius: var(--border-bottom-right-radius, inherit);
 }
 .gridElementSpacer {
   pointer-events: none;
+  order: var(--order);
 }
 ol,
 ul {

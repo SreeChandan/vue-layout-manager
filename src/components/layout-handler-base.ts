@@ -11,6 +11,11 @@ interface GridElement {
   position: number;
 }
 
+interface GridEnds {
+  absolute: Record<"start" | "end", GridElement | null>;
+  elements: Record<"start" | "end", GridElement | null>;
+}
+
 function hasOwnProperties(obj: Record<string, unknown>, props: string[]) {
   let res = true;
   props.forEach((prop) => {
@@ -164,8 +169,35 @@ export const LayoutHandlerBase = Vue.extend({
       const res: Record<string, GridElement["position"]> = {};
       this.fillers?.forEach((value) => {
         this.finalOrders?.forEach((value2) => {
-          res[value2.name] = value2.position;
+          if (value2.name !== "filler") res[value2.name] = value2.position;
         });
+      });
+      return res;
+    },
+    gridEnds(): GridEnds {
+      const res: GridEnds = {
+        absolute: { start: null, end: null },
+        elements: { start: null, end: null },
+      };
+      this.finalOrders?.forEach(({ name, position }) => {
+        if (
+          res.absolute.start === null ||
+          position < res.absolute.start.position
+        )
+          res.absolute.start = { name: name, position: position };
+        if (res.absolute.end === null || position > res.absolute.end.position)
+          res.absolute.end = { name: name, position: position };
+
+        if (
+          res.elements.start === null ||
+          (position < res.elements.start.position && name !== "filler")
+        )
+          res.elements.start = { name: name, position: position };
+        if (
+          res.elements.end === null ||
+          (position > res.elements.end.position && name !== "filler")
+        )
+          res.elements.end = { name: name, position: position };
       });
       return res;
     },
@@ -217,8 +249,7 @@ export const LayoutHandlerBase = Vue.extend({
       },
       [
         ...(this.finalOrders
-          ? this.gridElements.map((value, index) => {
-              const val = value as GridElement;
+          ? (this.gridElements as GridElement[]).map((value, index) => {
               return createElement(
                 "li",
                 {
@@ -228,12 +259,35 @@ export const LayoutHandlerBase = Vue.extend({
                     {},
                     this.gridElementStyle ? this.gridElementStyle : {},
                     {
-                      order: this.gridElementsOrders[val.name],
-                      "--border-radius": "unset",
+                      "--order": this.gridElementsOrders[value.name],
+                      "--border-top-left-radius":
+                        this.gridEnds.absolute.start?.name === value.name
+                          ? "initial"
+                          : "0px",
+                      "--border-top-right-radius":
+                        this.axis == "x"
+                          ? this.gridEnds.absolute.end?.name === value.name
+                            ? "initial"
+                            : "0px"
+                          : this.gridEnds.absolute.start?.name === value.name
+                          ? "initial"
+                          : "0px",
+                      "--border-bottom-left-radius":
+                        this.axis == "x"
+                          ? this.gridEnds.absolute.start?.name === value.name
+                            ? "initial"
+                            : "0px"
+                          : this.gridEnds.absolute.end?.name === value.name
+                          ? "initial"
+                          : "0px",
+                      "--border-bottom-right-radius":
+                        this.gridEnds.absolute.end?.name === value.name
+                          ? "initial"
+                          : "0px",
                     }
                   ),
                 },
-                [this.$slots[val.name]]
+                [this.$slots[value.name]]
                 //Object.values(this.$slots)
               );
             })
@@ -247,7 +301,7 @@ export const LayoutHandlerBase = Vue.extend({
                   {},
                   this.gridSpacersStyle ? this.gridSpacersStyle : {},
                   {
-                    order: this.finalOrders
+                    "--order": this.finalOrders
                       ? this.finalOrders[filler.position + 1].position
                       : 0,
                   }
